@@ -135,7 +135,7 @@ prompt:
 # NOTE: the canonical source file is AGENTS.md; it is automatically renamed
 #       to the agent-specific filename (AgentHarness.instruction_filename) during setup
 instructions:
-  enabled: false
+  enabled: true
 
 # controls:
 # 1. whether to copy skills from `src/bcbench/agent/shared/instructions/<sanitized-repo>/skills/`
@@ -183,6 +183,12 @@ plugins:
     repo: "microsoft/BCQuality"
     revision: "ad8ccde5953fd6ce072e3b59049406783066ed60"
     path: "."
+  - name: "aldev"
+    enabled: true
+    source: github
+    repo: "vetatek-llc/vtk-aldev-kit"
+    revision: "ccaf7481d96af2ab29c9357125466056c84edf73"
+    path: "plugins/aldev"
 
 mcp:
   servers:
@@ -207,6 +213,18 @@ mcp:
     - name: "bcmcp"
       type: "http"
       url: ""
+
+    # aldev plugin MCP servers, listed here as well as in the plugin's .mcp.json because the harness
+    # runs Claude with --strict-mcp-config
+    - name: "al-mcp-server"
+      type: "stdio"
+      command: "npx"
+      args: ["-y", "al-mcp-server"]
+
+    - name: "bc-code-intelligence-mcp"
+      type: "stdio"
+      command: "npx"
+      args: ["-y", "bc-code-intelligence-mcp"]
 
     # Microsoft Learn MCP: official AL docs + code samples the bc-al-query-mcp skill can ground its AL
     # syntax in (public server, no auth). Off by default; there is no dispatch flag. To run a
